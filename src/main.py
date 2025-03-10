@@ -303,7 +303,7 @@ class SimpleAntivirus:
         try:
             # Check file size first to avoid reading very large files
             file_size = os.path.getsize(file_path)
-            if file_size > 50 * 1024 * 1024:  # 50 MB
+            if file_size > 1000 * 1024 * 1024:  # 50 MB
                 threats.append(
                     ThreatDefinition(
                         None,
@@ -574,9 +574,10 @@ class SimpleAntivirus:
 
 def main():
     parser = argparse.ArgumentParser(description='Neartha Antivirus')
-    parser.add_argument('path', help='File or directory to scan')
+    parser.add_argument('path', nargs='?', default=None, help='File or directory to scan')
     parser.add_argument('-r', '--recursive', action='store_true', help='Scan directories recursively')
     parser.add_argument('-v', '--verbose', action='store_true', help='Show all files being scanned')
+    parser.add_argument('-f', '--full-scan', action='store_true', help='Perform a full system scan')
     
     args = parser.parse_args()
     
@@ -586,25 +587,52 @@ def main():
     scanner.print_rich("Neartha Antivirus Scanner", style="bold blue", highlight=True)
     scanner.print_rich("=" * 50, style="blue")
     
-    if os.path.isfile(args.path):
-        scanner.print_rich(f"Scanning file: {args.path}", style="cyan")
-        results = scanner.scan_file(args.path)
-        if results:
-            scanner.print_rich("Threats found:", style="red bold")
-            for threat in results:
-                scanner.print_threat(threat, args.path)
-        else:
-            scanner.print_rich("No threats detected.", style="green")
+    if args.full_scan:
+        # Determine root directory based on operating system
+        if os.name == 'nt':  # Windows
+            roots = []
+            # Get all drive letters
+            import string
+            from ctypes import windll
+            drives = []
+            bitmask = windll.kernel32.GetLogicalDrives()
+            for letter in string.ascii_uppercase:
+                if bitmask & 1:
+                    drives.append(letter + ":\\")
+                bitmask >>= 1
+            
+            scanner.print_rich(f"Starting full system scan on drives: {', '.join(drives)}", style="cyan")
+            for drive in drives:
+                scanner.print_rich(f"\nScanning drive: {drive}", style="cyan bold", highlight=True)
+                scanner.scan_directory(drive, recursive=True, verbose=args.verbose)
+        else:  # Unix-like systems
+            scanner.print_rich("Starting full system scan from root directory", style="cyan")
+            scanner.scan_directory("/", recursive=True, verbose=args.verbose)
     
-    elif os.path.isdir(args.path):
-        scanner.print_rich(
-            f"Scanning directory: {args.path} {'(recursively)' if args.recursive else ''}",
-            style="cyan"
-        )
-        scanner.scan_directory(args.path, args.recursive, args.verbose)
+    elif args.path:
+        if os.path.isfile(args.path):
+            scanner.print_rich(f"Scanning file: {args.path}", style="cyan")
+            results = scanner.scan_file(args.path)
+            if results:
+                scanner.print_rich("Threats found:", style="red bold")
+                for threat in results:
+                    scanner.print_threat(threat, args.path)
+		scanner.print_rich("Read about these detections: https://neartha.w3spaces.com/detections.html ", style="red bold")
+            else:
+                scanner.print_rich("No threats detected.", style="green")
+        
+        elif os.path.isdir(args.path):
+            scanner.print_rich(
+                f"Scanning directory: {args.path} {'(recursively)' if args.recursive else ''}",
+                style="cyan"
+            )
+            scanner.scan_directory(args.path, args.recursive, args.verbose)
+        
+        else:
+            scanner.print_rich(f"Error: {args.path} is not a valid file or directory.", style="red bold")
     
     else:
-        scanner.print_rich(f"Error: {args.path} is not a valid file or directory.", style="red bold")
+        parser.print_help()
 
 
 if __name__ == "__main__":
