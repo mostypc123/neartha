@@ -1,7 +1,6 @@
 # Neartha Antivirus Scanner
 
 <div align="center">
-  <img src="logo.png" alt="Neartha Logo" width="150">
   <img src="https://img.shields.io/github/stars/mostypc123/neartha?style=plastic" alt="GitHub stars">
   <img src="https://img.shields.io/github/release/mostypc123/neartha.svg?style=plastic" alt="GitHub release">
   <img src="https://img.shields.io/github/downloads/mostypc123/neartha/total.svg?style=plastic" alt="GitHub downloads">
