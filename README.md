@@ -1,14 +1,15 @@
 # Neartha Antivirus Scanner
 
 <div align="center">
-  ![GitHub stars](https://img.shields.io/github/stars/mostypc123/neartha?style=plastic)
-  ![GitHub release](https://img.shields.io/github/release/mostypc123/neartha.svg?style=plastic)
-  ![GitHub downloads](https://img.shields.io/github/downloads/mostypc123/neartha/total.svg?style=plastic)
-  ![GitHub last commit](https://img.shields.io/github/last-commit/mostypc123/neartha.svg?style=plastic)
-  ![GitHub issues](https://img.shields.io/github/issues/mostypc123/neartha.svg?style=plastic)
-  ![GitHub pull requests](https://img.shields.io/github/issues-pr/mostypc123/neartha.svg?style=plastic)
-  ![GitHub contributors](https://img.shields.io/github/contributors/mostypc123/neartha.svg?style=plastic)
-  ![Top language](https://img.shields.io/github/languages/top/mostypc123/neartha.svg?style=plastic)
+  <img src="logo.png" alt="Neartha Logo" width="150">
+  <img src="https://img.shields.io/github/stars/mostypc123/neartha?style=plastic" alt="GitHub stars">
+  <img src="https://img.shields.io/github/release/mostypc123/neartha.svg?style=plastic" alt="GitHub release">
+  <img src="https://img.shields.io/github/downloads/mostypc123/neartha/total.svg?style=plastic" alt="GitHub downloads">
+  <img src="https://img.shields.io/github/last-commit/mostypc123/neartha.svg?style=plastic" alt="GitHub last commit">
+  <img src="https://img.shields.io/github/issues/mostypc123/neartha.svg?style=plastic" alt="GitHub issues">
+  <img src="https://img.shields.io/github/issues-pr/mostypc123/neartha.svg?style=plastic" alt="GitHub pull requests">
+  <img src="https://img.shields.io/github/contributors/mostypc123/neartha.svg?style=plastic" alt="GitHub contributors">
+  <img src="https://img.shields.io/github/languages/top/mostypc123/neartha.svg?style=plastic" alt="Top language">
   <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg?style=plastic" alt="License: MIT">
 </div>
 
