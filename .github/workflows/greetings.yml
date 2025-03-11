@@ -1,0 +1,66 @@
+name: Contribution Greetings
+on: 
+  pull_request_target:
+    types: [opened, closed]
+  issues:
+    types: [opened]
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: "<!-- bot: mostypc123bot, avatar: https://avatars.githubusercontent.com/u/140317448?v=4 -->Thanks for your issue! <br>Just a reminder, we recommend to read existing issues and documentation."
+        pr-message: "<!-- bot: mostypc123bot, avatar: https://avatars.githubusercontent.com/u/140317448?v=4 -->Thanks for the pull request!"
+    - name: Check Contributor History
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const { owner, repo } = context.repo;
+          const contributor = context.payload.sender.login;
+          
+          // Only run on PR or issue open events
+          if (!(context.payload.action === 'opened')) return;
+          
+          // Fetch total PR and Issue count for this contributor
+          const [prResponse, issueResponse] = await Promise.all([
+            github.rest.search.issuesAndPullRequests({
+              q: `is:pr repo:${owner}/${repo} author:${contributor}`
+            }),
+            github.rest.search.issuesAndPullRequests({
+              q: `is:issue repo:${owner}/${repo} author:${contributor}`
+            })
+          ]);
+          
+          const totalContributions = prResponse.data.total_count + issueResponse.data.total_count;
+          
+          let message = '';
+          
+          if (totalContributions > 10) {
+            message = `<!-- bot: mostypc123bot, avatar: https://avatars.githubusercontent.com/u/140317448?v=4 -->Wow, you're still contributing @${contributor}!`;
+          } else if (totalContributions > 1) {
+            message = "<!-- bot: mostypc123bot, avatar: https://avatars.githubusercontent.com/u/140317448?v=4 -->Whoa! Thanks for another contribution!";
+          }
+          
+          if (message) {
+            if (context.payload.pull_request) {
+              github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: context.issue.number,
+                body: message
+              });
+            } else if (context.payload.issue) {
+              github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: context.issue.number,
+                body: message
+              });
+            }
+          }
