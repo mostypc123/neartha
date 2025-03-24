@@ -37,11 +37,8 @@ class SimpleAntivirus:
         
         # Initialize signature databases
         self.virus_signatures = {
-            # Common malware file hashes (MD5) - these are examples only
-            "44d88612fea8a8f36de82e1278abb02f": "Malware.Signature.Eicar.TestFile",
-            "e4968ef99266df7c9a1f0637d2389dab": "Malware.Signature.Generic.Trojan",
-            "a5138bf8b4bc4be0e6593c955a7d8d7f": "Malware.Signature.Ransomware.Generic",
-            # Add more real signatures as needed
+            "ec9c6f035a8c4a00c90be20ea8861266": "Trojan_VTHighConfidence_37.72",
+            "44d88612fea8a8f36de82e1278abb02f": "eicar-test-file"
         }
         
         # Suspicious patterns to look for in files with structured threat categories
@@ -617,7 +614,7 @@ def main():
                 scanner.print_rich("Threats found:", style="red bold")
                 for threat in results:
                     scanner.print_threat(threat, args.path)
-		scanner.print_rich("Read about these detections: https://neartha.w3spaces.com/detections.html ", style="red bold")
+                scanner.print_rich("Learn about these detections: https://neartha.w3spaces.com/detections.html", style="red bold")
             else:
                 scanner.print_rich("No threats detected.", style="green")
         
